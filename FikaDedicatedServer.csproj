@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Networking\FikaNatPunchServer.cs" />
+    <Compile Include="FikaNatPunchServer.cs" />
     <Compile Include="FikaDedicatedServer.cs" />
     <Compile Include="Networking\LiteNetLib\BaseChannel.cs" />
     <Compile Include="Networking\LiteNetLib\ConnectionRequest.cs" />
