@@ -40,8 +40,15 @@ namespace FikaDedicatedServer.Networking
                 NatPunchEnabled = true
             };
 
-            _netServer.Start(ServerPort);
-            _netServer.NatPunchModule.Init(this);
+            try
+            {
+                _netServer.Start(ServerPort);
+                _netServer.NatPunchModule.Init(this);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ColorEscapeSequence.RED}Error when starting NatPunchServer: {ex.Message}");
+            }
 
             Console.WriteLine($"{ColorEscapeSequence.GREEN}NatPunchServer started on port {NetServer.LocalPort}");
         }
@@ -59,7 +66,7 @@ namespace FikaDedicatedServer.Networking
             }
             catch(Exception ex) 
             {
-                Console.WriteLine($"Error when parsing NatIntroductionRequest: {ex.Message}");
+                Console.WriteLine($"{ColorEscapeSequence.RED}Error when parsing NatIntroductionRequest: {ex.Message}");
                 return;
             }
 
@@ -86,10 +93,14 @@ namespace FikaDedicatedServer.Networking
                             token
                             );
                     }
+                    else
+                    {
+                        Console.WriteLine($"{ColorEscapeSequence.RED}Unknown ServerId provided by client.");
+                    }
                     break;
 
                 default:
-                    Console.WriteLine($"Unknown request received: {introductionType}:{sessionId}");
+                    Console.WriteLine($"{ColorEscapeSequence.RED}Unknown request received: {introductionType}:{sessionId}");
                     break;
 
             }
