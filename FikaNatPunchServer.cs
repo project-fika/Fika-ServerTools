@@ -24,7 +24,6 @@ namespace FikaDedicatedServer.Networking
     internal class FikaNatPunchServer : INatPunchListener, INetEventListener
     {
         private const int ServerPort = 6970;
-        private const string ConnectionKey = "fika.core";
 
         private readonly Dictionary<string, ServerPeer> _servers = new Dictionary<string, ServerPeer>();
         private NetManager _netServer;
@@ -44,7 +43,7 @@ namespace FikaDedicatedServer.Networking
             _netServer.Start(ServerPort);
             _netServer.NatPunchModule.Init(this);
 
-            Console.WriteLine($"NatPunchServer started on port {NetServer.LocalPort}");
+            Console.WriteLine($"{ColorEscapeSequence.GREEN}NatPunchServer started on port {NetServer.LocalPort}");
         }
 
         public void OnNatIntroductionRequest(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, string token)

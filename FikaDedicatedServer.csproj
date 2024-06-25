@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorEscapeSequence.cs" />
     <Compile Include="FikaNatPunchServer.cs" />
     <Compile Include="FikaDedicatedServer.cs" />
     <Compile Include="Networking\LiteNetLib\BaseChannel.cs" />
