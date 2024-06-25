@@ -13,16 +13,9 @@ namespace FikaDedicatedServer.Networking
     {
         public IPEndPoint InternalAddr { get; }
         public IPEndPoint ExternalAddr { get; }
-        public DateTime RefreshTime { get; private set; }
-
-        public void Refresh()
-        {
-            RefreshTime = DateTime.UtcNow;
-        }
 
         public ServerPeer(IPEndPoint internalAddr, IPEndPoint externalAddr)
         {
-            Refresh();
             InternalAddr = internalAddr;
             ExternalAddr = externalAddr;
         }
