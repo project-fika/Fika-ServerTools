@@ -25,6 +25,7 @@ namespace FikaDedicatedServer.Networking
     public class FikaNatPunchServer : INatPunchListener, INetEventListener
     {
         private readonly Dictionary<string, ServerPeer> _servers = new Dictionary<string, ServerPeer>();
+        private FikaNatPunchServerConfig _config;
         private NetManager _netServer;
         public NetManager NetServer
         {
@@ -36,6 +37,8 @@ namespace FikaDedicatedServer.Networking
 
         public void Init(FikaNatPunchServerConfig config)
         {
+            _config = config;
+            
             _netServer = new NetManager(this)
             {
                 IPv6Enabled = false,
@@ -44,10 +47,10 @@ namespace FikaDedicatedServer.Networking
 
             try
             {
-                _netServer.Start(config.IP, "", config.Port);
+                _netServer.Start(_config.IP, "", _config.Port);
                 _netServer.NatPunchModule.Init(this);
 
-                Logger.LogSuccess($"NatPunchServer started on {config.IP}:{NetServer.LocalPort}");
+                Logger.LogSuccess($"NatPunchServer started on {_config.IP}:{NetServer.LocalPort}");
             }
             catch (Exception ex)
             {
@@ -88,13 +91,16 @@ namespace FikaDedicatedServer.Networking
                     {
                         Logger.LogInfo($"Introducing server {sessionId} ({sPeer.ExternalAddr}) to client ({remoteEndPoint})");
 
-                        _netServer.NatPunchModule.NatIntroduce(
-                            sPeer.InternalAddr,
-                            sPeer.ExternalAddr,
-                            localEndPoint,
-                            remoteEndPoint,
-                            token
-                            );
+                        for(int i = 0; i < _config.NatIntroduceAmount; i++)
+                        {
+                            _netServer.NatPunchModule.NatIntroduce(
+                                sPeer.InternalAddr,
+                                sPeer.ExternalAddr,
+                                localEndPoint,
+                                remoteEndPoint,
+                                token
+                                );
+                        }
                     }
                     else
                     {
