@@ -35,10 +35,10 @@ namespace FikaDedicatedServer.Networking
             }
         }
 
-        public void Init(FikaNatPunchServerConfig config)
+        public FikaNatPunchServer(FikaNatPunchServerConfig config)
         {
             _config = config;
-            
+
             _netServer = new NetManager(this)
             {
                 IPv6Enabled = false,

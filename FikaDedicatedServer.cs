@@ -12,8 +12,7 @@ namespace FikaDedicatedServer
         {
             Config = ConfigManager.Load();
             
-            FikaNatPunchServer fikaNatPunchServer = new FikaNatPunchServer();
-            fikaNatPunchServer.Init(Config.FikaNatPunchServer);
+            FikaNatPunchServer fikaNatPunchServer = new FikaNatPunchServer(Config.FikaNatPunchServer);
 
             while(true)
             {
