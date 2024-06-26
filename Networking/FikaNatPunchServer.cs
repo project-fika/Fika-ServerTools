@@ -1,4 +1,5 @@
-﻿using LiteNetLib;
+﻿using FikaDedicatedServer.Config;
+using LiteNetLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,18 +22,19 @@ namespace FikaDedicatedServer.Networking
         }
     }
 
-    internal class FikaNatPunchServer : INatPunchListener, INetEventListener
+    public class FikaNatPunchServer : INatPunchListener, INetEventListener
     {
-        private const int ServerPort = 6970;
-
         private readonly Dictionary<string, ServerPeer> _servers = new Dictionary<string, ServerPeer>();
         private NetManager _netServer;
         public NetManager NetServer
         {
-            get { return _netServer; }
+            get 
+            { 
+                return _netServer; 
+            }
         }
 
-        public void Init()
+        public void Init(FikaNatPunchServerConfig config)
         {
             _netServer = new NetManager(this)
             {
@@ -42,15 +44,15 @@ namespace FikaDedicatedServer.Networking
 
             try
             {
-                _netServer.Start(ServerPort);
+                _netServer.Start(config.IP, "", config.Port);
                 _netServer.NatPunchModule.Init(this);
+
+                Logger.LogSuccess($"NatPunchServer started on {config.IP}:{NetServer.LocalPort}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{ColorEscapeSequence.RED}Error when starting NatPunchServer: {ex.Message}");
+                Logger.LogError($"Error when starting NatPunchServer: {ex.Message}");
             }
-
-            Console.WriteLine($"{ColorEscapeSequence.GREEN}NatPunchServer started on port {NetServer.LocalPort}");
         }
 
         public void OnNatIntroductionRequest(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, string token)
@@ -66,7 +68,7 @@ namespace FikaDedicatedServer.Networking
             }
             catch(Exception ex) 
             {
-                Console.WriteLine($"{ColorEscapeSequence.RED}Error when parsing NatIntroductionRequest: {ex.Message}");
+                Logger.LogError($"Error when parsing NatIntroductionRequest: {ex.Message}");
                 return;
             }
 
@@ -75,15 +77,16 @@ namespace FikaDedicatedServer.Networking
                 case "server":
                     if (!_servers.TryGetValue(sessionId, out sPeer))
                     {
-                        Console.WriteLine($"Added {sessionId} ({remoteEndPoint}) to server list.");
+                        Logger.LogInfo($"Added {sessionId} ({remoteEndPoint}) to server list.");
                     }
+
                     _servers[sessionId] = new ServerPeer(localEndPoint, remoteEndPoint);
                     break;
 
                 case "client":
                     if (_servers.TryGetValue(sessionId, out sPeer))
                     {
-                        Console.WriteLine($"Introducing server {sessionId} ({sPeer.ExternalAddr}) to client ({remoteEndPoint})");
+                        Logger.LogInfo($"Introducing server {sessionId} ({sPeer.ExternalAddr}) to client ({remoteEndPoint})");
 
                         _netServer.NatPunchModule.NatIntroduce(
                             sPeer.InternalAddr,
@@ -95,12 +98,12 @@ namespace FikaDedicatedServer.Networking
                     }
                     else
                     {
-                        Console.WriteLine($"{ColorEscapeSequence.RED}Unknown ServerId provided by client.");
+                        Logger.LogError($"Unknown ServerId provided by client.");
                     }
                     break;
 
                 default:
-                    Console.WriteLine($"{ColorEscapeSequence.RED}Unknown request received: {introductionType}:{sessionId}");
+                    Logger.LogError($"Unknown request received: {token}");
                     break;
 
             }

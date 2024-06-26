@@ -36,6 +36,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -47,8 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorEscapeSequence.cs" />
-    <Compile Include="FikaNatPunchServer.cs" />
+    <Compile Include="Config\ConfigManager.cs" />
+    <Compile Include="Console\Logger.cs" />
+    <Compile Include="Config\FikaDedicatedServerConfig.cs" />
+    <Compile Include="Networking\FikaNatPunchServer.cs" />
     <Compile Include="FikaDedicatedServer.cs" />
     <Compile Include="Networking\LiteNetLib\BaseChannel.cs" />
     <Compile Include="Networking\LiteNetLib\ConnectionRequest.cs" />
@@ -89,7 +94,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Networking\LiteNetLib\LICENSE.md" />
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

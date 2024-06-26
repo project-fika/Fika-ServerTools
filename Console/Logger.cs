@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace FikaDedicatedServer
 {
-    public static class ColorEscapeSequence
+    public static class EscapeSequences
     {
-        public static string NL = Environment.NewLine; // shortcut
         public static string NORMAL = Console.IsOutputRedirected ? "" : "\x1b[39m";
         public static string RED = Console.IsOutputRedirected ? "" : "\x1b[91m";
         public static string GREEN = Console.IsOutputRedirected ? "" : "\x1b[92m";
@@ -23,5 +22,28 @@ namespace FikaDedicatedServer
         public static string NOUNDERLINE = Console.IsOutputRedirected ? "" : "\x1b[24m";
         public static string REVERSE = Console.IsOutputRedirected ? "" : "\x1b[7m";
         public static string NOREVERSE = Console.IsOutputRedirected ? "" : "\x1b[27m";
+    }
+    
+    public static class Logger
+    {
+        public static void LogInfo(string message)
+        {
+            Console.WriteLine($"{EscapeSequences.NORMAL}{message}");
+        }
+
+        public static void LogSuccess(string message)
+        {
+            Console.WriteLine($"{EscapeSequences.GREEN}{message}");
+        }
+
+        public static void LogWarning(string message)
+        {
+            Console.WriteLine($"{EscapeSequences.YELLOW}{message}");
+        }
+
+        public static void LogError(string message)
+        {
+            Console.WriteLine($"{EscapeSequences.RED}{message}");
+        }
     }
 }
