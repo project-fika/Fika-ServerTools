@@ -18,7 +18,7 @@ namespace FikaServerTools.Config
 
                     switch (argName)
                     {
-                        case "-natPunchServer":
+                        case "-NatPunchServer":
                             config.NatPunchServer.Enable = true;
                             break;
                         case "-IP":
