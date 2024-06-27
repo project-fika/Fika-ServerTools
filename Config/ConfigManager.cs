@@ -29,7 +29,7 @@ namespace FikaServerTools.Config
                             config.NatPunchServer.Port = int.Parse(argValue);
                             i++;
                             break;
-                        case "-natIntroduceAmount":
+                        case "-NatIntroduceAmount":
                             config.NatPunchServer.NatIntroduceAmount = int.Parse(argValue);
                             i++;
                             break;
