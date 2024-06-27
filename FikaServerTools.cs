@@ -17,8 +17,8 @@ namespace FikaServerTools
 
             if(Config.NatPunchServer.Enable)
             {
-                FikaNatPunchServer fikaNatPunchServer = new FikaNatPunchServer(Config.NatPunchServer);
-                fikaNatPunchServer.Start();
+                _fikaNatPunchServer = new FikaNatPunchServer(Config.NatPunchServer);
+                _fikaNatPunchServer.Start();
             }
 
             // Main thread loop
