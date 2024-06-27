@@ -1,25 +1,43 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.IO;
+﻿using System;
 
-namespace FikaDedicatedServer.Config
+namespace FikaServerTools.Config
 {
     public static class ConfigManager
     {
-        private static string _configFilePath = $"{Directory.GetCurrentDirectory()}\\config.json";
 
-        public static FikaDedicatedServerConfig Load()
+        public static FikaServerToolsConfig Load(string[] args)
         {
-            FikaDedicatedServerConfig config = new FikaDedicatedServerConfig();
-
-            if (!File.Exists(_configFilePath))
-            {
-                Save(config);
-            }
+            FikaServerToolsConfig config = new FikaServerToolsConfig();
 
             try
             {
-                config = JsonConvert.DeserializeObject<FikaDedicatedServerConfig>(File.ReadAllText(_configFilePath));
+                for (int i = 0; i < args.Length; i++)
+                {
+                    string argName = args[i];
+                    string argValue = args[i + 1];
+
+                    switch (argName)
+                    {
+                        case "-natPunchServer":
+                            config.NatPunchServer.Enable = true;
+                            break;
+                        case "-IP":
+                            config.NatPunchServer.IP = argValue;
+                            i++;
+                            break;
+                        case "-Port":
+                            config.NatPunchServer.Port = int.Parse(argValue);
+                            i++;
+                            break;
+                        case "-natIntroduceAmount":
+                            config.NatPunchServer.NatIntroduceAmount = int.Parse(argValue);
+                            i++;
+                            break;
+                        default:
+                            Logger.LogError($"Invalid argument provided: {argName}");
+                            break;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -27,18 +45,6 @@ namespace FikaDedicatedServer.Config
             }
 
             return config;
-        }
-
-        public static void Save(FikaDedicatedServerConfig config)
-        {
-            try
-            {
-                File.WriteAllText(_configFilePath, JsonConvert.SerializeObject(config, Formatting.Indented));
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message);
-            }
         }
     }
 }

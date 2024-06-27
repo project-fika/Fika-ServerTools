@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4C300ECA-8244-4B95-94DD-03A9339B5C5B}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>FikaDedicatedServer</RootNamespace>
-    <AssemblyName>FikaDedicatedServer</AssemblyName>
+    <RootNamespace>FikaServerTools</RootNamespace>
+    <AssemblyName>FikaServerTools</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,9 +36,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -51,10 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ConfigManager.cs" />
-    <Compile Include="Console\Logger.cs" />
-    <Compile Include="Config\FikaDedicatedServerConfig.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Config\FikaServerToolsConfig.cs" />
     <Compile Include="Networking\FikaNatPunchServer.cs" />
-    <Compile Include="FikaDedicatedServer.cs" />
+    <Compile Include="FikaServerTools.cs" />
     <Compile Include="Networking\LiteNetLib\BaseChannel.cs" />
     <Compile Include="Networking\LiteNetLib\ConnectionRequest.cs" />
     <Compile Include="Networking\LiteNetLib\INetEventListener.cs" />
@@ -96,8 +93,6 @@
     <None Include="Networking\LiteNetLib\LICENSE.md" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

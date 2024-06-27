@@ -1,14 +1,11 @@
-﻿using FikaDedicatedServer.Config;
+﻿using FikaServerTools.Config;
 using LiteNetLib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FikaDedicatedServer.Networking
+namespace FikaServerTools.Networking
 {
     class ServerPeer
     {
@@ -44,7 +41,10 @@ namespace FikaDedicatedServer.Networking
                 IPv6Enabled = false,
                 NatPunchEnabled = true
             };
+        }
 
+        public void Start()
+        {
             try
             {
                 _netServer.Start(_config.IP, "", _config.Port);
@@ -54,8 +54,19 @@ namespace FikaDedicatedServer.Networking
             }
             catch (Exception ex)
             {
-                Logger.LogError($"Error when starting NatPunchServer: {ex.Message}");
+                Logger.LogError($"NatPunchServer failed to start: {ex.Message}");
             }
+        }
+
+        public void Stop()
+        {
+            _netServer?.Stop();
+        }
+
+        public void PollEvents()
+        {
+            NetServer.PollEvents();
+            NetServer.NatPunchModule.PollEvents();
         }
 
         public void OnNatIntroductionRequest(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, string token)

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
-namespace FikaDedicatedServer.Config
+namespace FikaServerTools.Config
 {
     [DataContract]
-    public class FikaDedicatedServerConfig
+    public class FikaServerToolsConfig
     {
         [DataMember(Name = "natPunchServer")]
-        public FikaNatPunchServerConfig FikaNatPunchServer { get; set; } = new FikaNatPunchServerConfig();
+        public FikaNatPunchServerConfig NatPunchServer { get; set; } = new FikaNatPunchServerConfig();
     }
 
     [DataContract]
