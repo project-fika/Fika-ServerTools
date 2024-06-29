@@ -1,47 +1,52 @@
-﻿using System;
-
-namespace FikaServerTools.Config
+﻿namespace FikaServerTools.Config
 {
     public static class ConfigManager
     {
-
-        public static FikaServerToolsConfig Load(string[] args)
+        public static FikaServerToolsConfig LoadFromArgs(string[] args)
         {
-            FikaServerToolsConfig config = new FikaServerToolsConfig();
-
-            try
+            if(args.Length == 0)
             {
-                for (int i = 0; i < args.Length; i++)
-                {
-                    string argName = args[i];
-                    string argValue = args[i + 1];
-
-                    switch (argName)
-                    {
-                        case "-NatPunchServer":
-                            config.NatPunchServer.Enable = true;
-                            break;
-                        case "-IP":
-                            config.NatPunchServer.IP = argValue;
-                            i++;
-                            break;
-                        case "-Port":
-                            config.NatPunchServer.Port = int.Parse(argValue);
-                            i++;
-                            break;
-                        case "-NatIntroduceAmount":
-                            config.NatPunchServer.NatIntroduceAmount = int.Parse(argValue);
-                            i++;
-                            break;
-                        default:
-                            Logger.LogError($"Invalid argument provided: {argName}");
-                            break;
-                    }
-                }
+                Console.WriteLine("No arguments provided.");
+                return null;
             }
-            catch (Exception ex)
+
+            FikaServerToolsConfig config = new();
+
+            string serviceName = args[0];
+
+            switch(serviceName)
             {
-                Logger.LogError(ex.Message);
+                case "-NatPunchServer":
+                    config.NatPunchServer.Enable = true;
+
+                    for (int i = 1; i < args.Length; i++)
+                    {
+                        string arg = args[i];
+
+                        switch (arg)
+                        {
+                            case "-IP":
+                                config.NatPunchServer.IP = args[i + 1];
+                                i++;
+                                break;
+                            case "-Port":
+                                config.NatPunchServer.Port = int.Parse(args[i + 1]);
+                                i++;
+                                break;
+                            case "-NatIntroduceAmount":
+                                config.NatPunchServer.NatIntroduceAmount = int.Parse(args[i + 1]);
+                                i++;
+                                break;
+                            default:
+                                Console.WriteLine($"Unknown argument provided: {arg}");
+                                break;
+                        }
+                    }
+                    break;
+                default:
+                    Console.WriteLine($"Unknown service name provided: {serviceName}");
+                    break;
+
             }
 
             return config;

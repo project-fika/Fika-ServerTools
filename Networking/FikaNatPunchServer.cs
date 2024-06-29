@@ -50,11 +50,11 @@ namespace FikaServerTools.Networking
                 _netServer.Start(_config.IP, "", _config.Port);
                 _netServer.NatPunchModule.Init(this);
 
-                Logger.LogSuccess($"NatPunchServer started on {_config.IP}:{NetServer.LocalPort}");
+                Console.WriteLine($"NatPunchServer started on {_config.IP}:{NetServer.LocalPort}");
             }
             catch (Exception ex)
             {
-                Logger.LogError($"NatPunchServer failed to start: {ex.Message}");
+                Console.WriteLine($"NatPunchServer failed to start: {ex.Message}");
             }
         }
 
@@ -82,7 +82,7 @@ namespace FikaServerTools.Networking
             }
             catch(Exception ex) 
             {
-                Logger.LogError($"Error when parsing NatIntroductionRequest: {ex.Message}");
+                Console.WriteLine($"Error when parsing NatIntroductionRequest: {ex.Message}");
                 return;
             }
 
@@ -91,7 +91,7 @@ namespace FikaServerTools.Networking
                 case "server":
                     if (!_servers.TryGetValue(sessionId, out sPeer))
                     {
-                        Logger.LogInfo($"Added {sessionId} ({remoteEndPoint}) to server list.");
+                        Console.WriteLine($"Added {sessionId} ({remoteEndPoint}) to server list.");
                     }
 
                     _servers[sessionId] = new ServerPeer(localEndPoint, remoteEndPoint);
@@ -100,7 +100,7 @@ namespace FikaServerTools.Networking
                 case "client":
                     if (_servers.TryGetValue(sessionId, out sPeer))
                     {
-                        Logger.LogInfo($"Introducing server {sessionId} ({sPeer.ExternalAddr}) to client ({remoteEndPoint})");
+                        Console.WriteLine($"Introducing server {sessionId} ({sPeer.ExternalAddr}) to client ({remoteEndPoint})");
 
                         for(int i = 0; i < _config.NatIntroduceAmount; i++)
                         {
@@ -115,12 +115,12 @@ namespace FikaServerTools.Networking
                     }
                     else
                     {
-                        Logger.LogError($"Unknown ServerId provided by client.");
+                        Console.WriteLine($"Unknown ServerId provided by client.");
                     }
                     break;
 
                 default:
-                    Logger.LogError($"Unknown request received: {token}");
+                    Console.WriteLine($"Unknown request received: {token}");
                     break;
 
             }

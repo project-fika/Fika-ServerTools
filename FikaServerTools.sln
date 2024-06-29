@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FikaServerTools", "FikaServerTools.csproj", "{4C300ECA-8244-4B95-94DD-03A9339B5C5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FikaServerTools", "FikaServerTools.csproj", "{33C237C6-FA39-4ECC-B3E0-56AB8066EDDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4C300ECA-8244-4B95-94DD-03A9339B5C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C300ECA-8244-4B95-94DD-03A9339B5C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C300ECA-8244-4B95-94DD-03A9339B5C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C300ECA-8244-4B95-94DD-03A9339B5C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33C237C6-FA39-4ECC-B3E0-56AB8066EDDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C237C6-FA39-4ECC-B3E0-56AB8066EDDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C237C6-FA39-4ECC-B3E0-56AB8066EDDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C237C6-FA39-4ECC-B3E0-56AB8066EDDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {05334491-DF7D-4076-8190-0E823AEB8FA6}
+		SolutionGuid = {0EEC13BF-D8EB-45ED-A35A-48AD08CEC215}
 	EndGlobalSection
 EndGlobal
