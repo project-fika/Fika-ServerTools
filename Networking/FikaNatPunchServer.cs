@@ -89,9 +89,13 @@ namespace FikaServerTools.Networking
             switch (introductionType)
             {
                 case "server":
-                    if (!_servers.TryGetValue(sessionId, out sPeer))
+                    if (_servers.TryGetValue(sessionId, out sPeer))
                     {
-                        Console.WriteLine($"Added {sessionId} ({remoteEndPoint}) to server list.");
+                        Console.WriteLine($"KeepAlive {sessionId} ({remoteEndPoint})");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Added {sessionId} ({remoteEndPoint}) to server list");
                     }
 
                     _servers[sessionId] = new ServerPeer(localEndPoint, remoteEndPoint);
