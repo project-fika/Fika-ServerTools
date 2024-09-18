@@ -39,9 +39,9 @@ jobs:
       - name: Create ZIP file
         run: |
           if [ ${{ matrix.os }} == "ubuntu-latest" ]; then
-            zip -r FikaServerTools_${{ github.ref_name }}-linux64.zip ./bin/Release/net8.0/linux-x64/publish/
+            zip -r --junk-paths FikaServerTools_${{ github.ref_name }}-linux64.zip ./bin/Release/net8.0/linux-x64/publish/
           else
-            zip -r FikaServerTools_${{ github.ref_name }}-windows64.zip ./bin/Release/net8.0/win-x64/publish/
+            zip -r --junk-paths FikaServerTools_${{ github.ref_name }}-windows64.zip ./bin/Release/net8.0/win-x64/publish/
           fi
         shell: bash
 
