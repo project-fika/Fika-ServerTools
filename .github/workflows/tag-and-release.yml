@@ -4,9 +4,37 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 jobs:
+
+  package-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Create dist folder
+        run: |
+          mkdir -p ./dist
+      - name: Create tar.gz archive
+        run: |
+          tar -czf ./dist/source_code.tar.gz --exclude="dist" .
+      - name: Create zip archive
+        run: |
+          zip -r ./dist/source_code.zip . -x "./dist/*"
+      - name: Upload tar.gz artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: source_code.tar.gz
+          path: ./dist/source_code.tar.gz
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: source_code.zip
+          path: ./dist/source_code.zip
+
   build:
+    needs: package-source
     runs-on: ubuntu-latest
 
     strategy:
@@ -15,10 +43,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x
 
@@ -27,21 +55,25 @@ jobs:
 
       - name: Publish application
         run: |
-          if [[ ${{ matrix.os }} == 'ubuntu-latest' ]]; then
-            dotnet publish -c Release -r linux-x64 --self-contained /p:PublishSingleFile=true -o ./publish
+          if [ ${{ matrix.os }} == "ubuntu-latest" ]; then
+            echo "PUBLISHING FOR LINUX"
+            dotnet publish -c Release -r linux-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
           else
-            dotnet publish -c Release -r win-x64 --self-contained /p:PublishSingleFile=true -o ./publish
-          
+            echo "PUBLISHING FOR WINDOWS"
+            dotnet publish -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
+          fi
+
       - name: Create ZIP file
         run: |
-          if [[ ${{ matrix.os }} == 'ubuntu-latest' ]]; then
-            zip -r FikaServerTools_${{ github.ref_name }}-linux64.zip ./publish
+          if [ ${{ matrix.os }} == "ubuntu-latest" ]; then
+            zip -r FikaServerTools_${{ github.ref_name }}-linux64.zip ./bin/Release/net8.0/linux-x64/publish/
           else
-            zip -r FikaServerTools_${{ github.ref_name }}-windows64.zip ./publish
+            zip -r FikaServerTools_${{ github.ref_name }}-windows64.zip ./bin/Release/net8.0/win-x64/publish/
+          fi
         shell: bash
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: FikaServerTools_${{ matrix.os }}_${{ github.ref_name }}
           path: FikaServerTools_${{ github.ref_name }}-*.zip
@@ -52,22 +84,32 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
+      - name: Download artifacts (tar.gz)
+        uses: actions/download-artifact@v4
+        with:
+          name: source_code.tar.gz
+          path: ./dist/
+      - name: Download artifacts (zip)
+        uses: actions/download-artifact@v4
+        with:
+          name: source_code.zip
+          path: ./dist/
+      - name: Download artifacts (Linux)
+        uses: actions/download-artifact@v4
         with:
           name: FikaServerTools_ubuntu-latest_${{ github.ref_name }}
           path: ./dist/linux
       - name: Download artifacts (Windows)
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: FikaServerTools_windows-latest_${{ github.ref_name }}
           path: ./dist/windows
 
       - name: Create release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -77,7 +119,7 @@ jobs:
           prerelease: true
 
       - name: Upload Linux build
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -87,7 +129,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload Windows build
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -97,7 +139,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload source code (zip)
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -107,7 +149,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload source code (tar.gz)
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
