@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        arch: [x64, arm64] # Add architecture support
+        arch: [x64, arm64]
 
     steps:
       - name: Checkout code
@@ -59,8 +59,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: FikaServerTools_${{ matrix.os }}_${{ matrix.arch }}_${{ github.ref_name }}
-          path: |
-            FikaServerTools_${{ github.ref_name }}-*.zip
+          path: FikaServerTools_${{ github.ref_name }}-*.zip
 
   release:
     needs: build
